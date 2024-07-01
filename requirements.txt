@@ -1,0 +1,11 @@
+fastapi
+
+uvicorn
+pydantic
+
+sqlalchemy
+pymysql
+mysql-connector-python
+mysqlclient
+alembic
+psycopg2-binary
