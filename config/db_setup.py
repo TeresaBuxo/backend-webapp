@@ -2,7 +2,6 @@ from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker,Session
 from sqlalchemy.ext.declarative import declarative_base
 import config.constants as cs
-from typing import Annotated
 
 URL_DATABASE = f'mysql+pymysql://{cs.USER}:{cs.PASSWORD}@{cs.HOST}:{cs.PORT}/{cs.SCHEMA}'
 

@@ -26,14 +26,20 @@ class UserBase(BaseModel):
         }
 
 class UserCreate(UserBase):
-    email:str
-    hashed_password:str
+    email: str
+    hashed_password: str
+    activation_date: dt.date
 
 class User(UserBase):
     user_id:Optional[int]
 
     class Config:
         from_attributes = True
+
+class UserAuth(UserBase):
+    email:str
+    hashed_password:str
+
 
 
     

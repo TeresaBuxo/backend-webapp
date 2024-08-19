@@ -1,9 +1,9 @@
-from sqlalchemy import Table,Boolean,Column, Integer, String,Float,DATE, ForeignKey
+from sqlalchemy import Table,Boolean,Column, Integer, String,Float,DATE, ForeignKey,DATETIME
 from sqlalchemy.orm import mapped_column,relationship
 from sqlalchemy.ext.automap import automap_base
 from config.db_setup import Base,engine
 
-from geopy.geocoders import Nominatim
+#from geopy.geocoders import Nominatim
 import datetime as dt
 import passlib.hash as hash
 
@@ -46,3 +46,20 @@ class Institution(Base):
         geolocator = Nominatim()
         location = geolocator.geocode(address)
         return location.latitude, location.longitude
+
+class Session(Base):
+    __tablename__='sessions'
+    session_id = Column(Integer,primary_key=True,index=True)
+    user_id = Column(Integer,ForeignKey("users.user_id"))
+    token = Column(String(255))
+    start_datetime = Column(DATETIME)
+    end_datetime = Column(DATETIME)
+
+class Project(Base):
+    __tablename__= 'projects'
+    project_id = Column(Integer,primary_key=True,index=True)
+    project_name = Column(String(100))
+    link = Column(String(255))
+    description = Column(String(255))
+    image = Column(String(255))
+    user_id = Column(Integer,ForeignKey("users.user_id"))
