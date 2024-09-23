@@ -9,3 +9,10 @@ class Project(BaseModel):
     description: Optional[str]
     image: Optional[str]
     user_id: Optional[int]
+
+    class Config:
+        from_attributes = True
+
+
+class CreateProject(BaseModel):
+    project_name: str

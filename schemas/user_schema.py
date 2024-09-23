@@ -2,8 +2,17 @@ from pydantic import BaseModel
 from typing import Optional
 import datetime as dt
 
+class UserCreate(BaseModel):
+    email:str
+    password:str
 
-class UserBase(BaseModel):
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            dt.date: lambda v: v.isoformat()
+        }
+
+class User(BaseModel):
     user_id:Optional[int]
     first_name:Optional[str]
     last_name1:Optional[str]
@@ -12,12 +21,11 @@ class UserBase(BaseModel):
     email:str
     hashed_password:str
     phone_number:Optional[str]
+    image:Optional[str]
     activation_date:Optional[dt.date]
     active:Optional[bool]
     deactivation_date:Optional[dt.date]
-    #institution_id:Optional[int]
-    latitude:Optional[float]
-    longitude:Optional[float]
+    member_of:Optional[int]
 
     class Config:
         from_attributes = True
@@ -25,20 +33,8 @@ class UserBase(BaseModel):
             dt.date: lambda v: v.isoformat()
         }
 
-class UserCreate(UserBase):
-    email: str
-    hashed_password: str
-    activation_date: dt.date
-
-class User(UserBase):
-    user_id:Optional[int]
-
-    class Config:
-        from_attributes = True
-
-class UserAuth(UserBase):
-    email:str
-    hashed_password:str
+class TokenData(BaseModel):
+    user_id:int
 
 
 
