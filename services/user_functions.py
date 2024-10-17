@@ -13,8 +13,7 @@ oauth2schema = security.OAuth2PasswordBearer(tokenUrl="api/users/token")
 async def get_user_by_email(email:str,db:Session,):
     '''Return the email if exists in db'''
     user = db.query(model.User).filter(model.User.email == email).first()
-    return user
-
+    return user 
 
 async def authenticate_user(email:str,password:str,db:Session):
     '''Checks if the email exist and verify the password and return the user if so'''
@@ -34,7 +33,7 @@ async def create_token(user:model.User): #expires_delta = ACCESS_TOKEN_EXPIRE_MI
     
     token = jwt.encode(user_obj,SECRET_KEY,algorithm=ALGORITHM)
 
-    # # Set token in cookie (HTTP-only and secure)
+    # Set token in cookie (HTTP-only and secure)
     # response.set_cookie(
     #     key="access_token",  # Name of the cookie
     #     value=token,  # The token itself
@@ -43,10 +42,10 @@ async def create_token(user:model.User): #expires_delta = ACCESS_TOKEN_EXPIRE_MI
     #     samesite="lax"       # Protects against CSRF
     # )
 
-    # # Return a success response (or return any data you need)
-    # print("message Token set in cookie")
+    # Return a success response (or return any data you need)
+    print("message Token set in cookie")
 
-    return token #dict(access_token = token, token_type="bearer")
+    return token#dict(access_token = token, token_type="bearer")
 
 
 async def get_current_user(db:Session=Depends(get_db),token:str = Depends(oauth2schema)):
@@ -67,6 +66,12 @@ async def get_current_user(db:Session=Depends(get_db),token:str = Depends(oauth2
         raise credential_exception
     
     user = db.query(model.User).filter(model.User.user_id == user_id).first()
+
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
 
     return user
 

@@ -4,6 +4,7 @@ from ..schemas import user_schema as schema
 from ..models import model
 from sqlalchemy.orm import Session
 from ..config.db_setup import get_db
+from ..config import constants as cs
 from ..services import user_functions
 import passlib.hash as hash
 
@@ -47,3 +48,27 @@ async def generate_token(form_data:security.OAuth2PasswordRequestForm = Depends(
 @user_route.get("/me",tags = ['users'])
 async def get_user(user:schema.User = Depends(user_functions.get_current_user)):
     return user
+
+@user_route.put("/update_user", tags=['users'])
+async def update_user(key: str, value: str, 
+                      user: schema.User = Depends(user_functions.get_current_user),
+                      db: Session = Depends(get_db)):
+
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Check if the attribute exists on the user model
+    if not hasattr(user, key):
+        raise HTTPException(status_code=400, detail=f"Field '{key}' does not exist on user")
+
+    # Set the attribute dynamically
+    setattr(user, key, value)
+
+    # Commit the changes to the database
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return user
+    
+    

@@ -11,3 +11,4 @@ class Video(BaseModel):
 
     class Config:
         from_attributes = True
+

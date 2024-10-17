@@ -22,12 +22,20 @@ async def create_project(input:schema.Project,db:Session=Depends(get_db),
     # if db_user:
     #     raise HTTPException(status_code=400, detail= "Email already in use")
     # else:
+
     project_obj = model.Project(project_name=input.project_name,
                                 link=input.link,
                                 description=input.description,
-                                image=input.image,
-                                user_id=user.user_id)
+                                image=input.image)
     db.add(project_obj)
     db.commit()
     db.refresh(project_obj)
+
+    rel_obj = model.User_Project(user_id = user.user_id,
+                                      project_id = project_obj.project_id,
+                                      member_type = "admin")
+    db.add(rel_obj)
+    db.commit()
+    db.refresh(rel_obj)
+    
     return project_obj 

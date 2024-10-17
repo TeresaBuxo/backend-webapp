@@ -13,7 +13,7 @@ class UserCreate(BaseModel):
         }
 
 class User(BaseModel):
-    user_id:Optional[int]
+    user_id:int
     first_name:Optional[str]
     last_name1:Optional[str]
     last_name2:Optional[str] 
@@ -21,11 +21,12 @@ class User(BaseModel):
     email:str
     hashed_password:str
     phone_number:Optional[str]
-    image:Optional[str]
-    activation_date:Optional[dt.date]
-    active:Optional[bool]
+    activation_date:dt.date
+    active:bool
     deactivation_date:Optional[dt.date]
-    member_of:Optional[int]
+    verified: bool
+    visible: bool
+    storage_path: Optional[str]
 
     class Config:
         from_attributes = True

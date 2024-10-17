@@ -8,7 +8,6 @@ class Project(BaseModel):
     link: Optional[str]
     description: Optional[str]
     image: Optional[str]
-    user_id: Optional[int]
 
     class Config:
         from_attributes = True
@@ -16,3 +15,11 @@ class Project(BaseModel):
 
 class CreateProject(BaseModel):
     project_name: str
+
+
+class User_Project(BaseModel):
+    __tablename__= 'users_projects'
+    rel_up_id:int
+    user_id:int
+    org_id:int
+    member_type: Optional[str]
